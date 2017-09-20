@@ -1,0 +1,61 @@
+  <header>
+    <nav>
+      <div class="nav-wrapper">
+        <ul class="left">
+          <a class="left" (click)="goBack()"><i class="material-icons">chevron_left</i></a>
+        </ul>
+        <a *ngIf="employee" href="#" data-activates="mobile-menu-employee" class="button-collapse">
+          <i class="material-icons">menu</i>
+        </a>
+        <ul *ngIf="employee" class="left hide-on-med-and-down">
+          <li class="active">
+            <a href="">Datos</a>
+          </li>
+          <li>
+            <a href="control">Control</a>
+          </li>
+        </ul>
+        <ul *ngIf="employee" class="right">
+          <li>
+            <span class="nav-title">Colaborador</span>
+          </li>
+          <li>
+            <div class="switch">
+              <label class="tooltipped" data-target="confirm" data-position="bottom" data-tooltip="esperando">
+                <input type="checkbox" [(ngModel)]="employee.habilitado">
+                <span class="lever"></span>
+              </label>
+            </div>
+          </li>
+        </ul>
+        <ul *ngIf="!employee" class="right">
+          <li>
+            <span class="nav-title">
+              Nuevo Colaborador
+            </span>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <section id="main" class="jio-scroll-y">
+    <div class="container wrapper-main">{{isActiveEmployee}}
+
+      <router-outlet></router-outlet>
+
+      <aside>
+        <ul class="side-nav" id="mobile-menu-employee">
+          <li class="active">
+            <a href="/employees/:id"><i class="material-icons">perm_identity</i>Datos</a>
+          </li>
+          <li>
+            <a href="/employees/:id/control"><i class="material-icons">work</i>Control</a>
+          </li>
+        </ul>
+      </aside>
+
+      <div class="alerts-wrapper">
+      </div>
+    </div>
+  </section>

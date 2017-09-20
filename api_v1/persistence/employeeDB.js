@@ -31,17 +31,17 @@ var employeeSchema = new Schema({
               type : Boolean,
               default : true
             },
-						createAt : {
+						createdAt : {
 							type : Date,
 							default : Date.now
 						},
-            updateAt : Date
+            updatedAt : Date
 					});
 
 var employee = mongoose.model('employees',employeeSchema);
 
 var fieldsExclude = function (str) {
-  return str.replace(/createAt|__v/g,"");
+  return str.replace(/createdAt|__v|updatedAt/g,"");
 }
 
 module.exports = {
@@ -59,7 +59,7 @@ module.exports = {
 			},function (err,data) {
 				if(err) {conn && conn.disconnect();return next(error.get(400,"No se registro el trabajador.",err))};
 				
-				next(err,data._id);
+				next(err,data["_doc"]);
         conn && conn.disconnect();
 			});
 		});
@@ -148,13 +148,12 @@ module.exports = {
           {
             $project : {
               letter : {
-                $substr : ["$apellidos",0,1]
+                $toLower : {$substr : ["$apellidos",0,1]}
               }
             }
-          },{
-            $sort : {
-              letter : 1
-            }
+          },
+          {
+            $sort : {letter : 1}
           },{
             $group : {
               _id : "$letter"
@@ -182,6 +181,63 @@ module.exports = {
           next(error.get(400,"No se actualizo el trabajador.",err));
         }else{
           next(err,data);
+        }
+        conn && conn.disconnect();
+      });
+    });
+  },
+  getBirthdays : function (fini,ffin,next) {
+    database.execute(function (err,conn) {
+      if (err) return next(error.get(500,"No hay conexion con la base de datos",err));
+
+      employee.aggregate([
+          {
+            $match : {
+              $and : [
+                {fNacimiento : {$exists : true}},
+                {habilitado : true},
+              ]
+            }
+          },
+          {
+            $project : {
+              birthday : "$fNacimiento",
+              _id : 0,
+              employee : {
+                $concat : ["$nombres"," ","$apellidos"]
+              },
+              photo : 1,
+              sexo : 1
+            }
+          }
+        ],function (err,data) {
+        if(err || data.length == 0){
+          next(error.get(404,"No se encontraron resultados.",err));
+        }else{
+          next(err,data);
+        }
+        conn && conn.disconnect();
+      });
+    });
+  },
+  getContracts : function (fini,ffin,next) {console.log(fini,ffin);
+    database.execute(function (err,conn) {
+      if(err) return next(error.get(500,"No hay conexion con la base de datos.",err));
+
+      employee.find({
+        fTerContrato : {
+          $gte : fini,
+          $lte : ffin
+        }
+      },"apellidos fTerContrato nombres cargo area regLaboral",{
+        sort : {fTerContrato : 1}
+      },function (err,data) {
+        if(err){
+          next(error.get(500,"Ocurrio un error al tratar de obtener los contratos.",err));
+        }else if(data.length == 0){
+          next(error.get(404,"No se encontraron contratos en este periodo.",err));
+        }else{
+          next(err,data)
         }
         conn && conn.disconnect();
       });

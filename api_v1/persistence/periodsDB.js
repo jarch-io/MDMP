@@ -20,6 +20,10 @@ var periodsSchema = new Schema({
     type : Number,
     required : [true ,"Ingrese un monto de pago."]
   },
+  cargo : {
+    type : String,
+    required : [true, "Ingrese un cargo."]
+  },
   regLaboral : {
     type : String,
     required : [true, "Ingrese un regimen Laboral."]
@@ -57,7 +61,8 @@ module.exports = {
         regLaboral : periodo.regLaboral,
         area : periodo.area,
         employee : periodo.employee,
-        pago : periodo.pago
+        pago : periodo.pago,
+        cargo : periodo.cargo
       },function (err,data) {
         if(err){
           next(error.get(404,"No se pudo registrar el periodo.",err));

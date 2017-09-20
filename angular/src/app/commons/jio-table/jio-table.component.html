@@ -1,0 +1,29 @@
+          <table class="jio-table highlight">
+            <thead>
+              <tr>
+                <th *ngFor="let skel of skeletor">
+                  <span *ngIf="!skel.element">{{skel.text || skel.key}}</span>
+                  <span *ngIf="skel.element && skel.element.type === 'routerLinkButton'">
+                    <button [class.hidden]="skel.element.headerHidden" class="btn-floating"></button>
+                  </span>
+                </th>
+                <!--th>
+                  <button class="hidden btn-floating">
+                    VER
+                  </button>
+                </th-->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of rows">
+                <td *ngFor="let skel of skeletor">
+                  <span *ngIf="!skel.element">{{row[skel.key]}}</span>
+                  <span *ngIf="skel.element && skel.element.type === 'routerLinkButton'">
+                    <a routerLink="{{skel.element.path+row[skel.key]}}" class="btn-floating waves-effect waves-light trasparent" [class.tooltipped]="skel.element.tooltip" data-position="top" data-tooltip="Visualizar">
+                      <i *ngIf="skel.element.icon" class="material-icons">{{skel.element.icon}}</i>
+                    </a>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>

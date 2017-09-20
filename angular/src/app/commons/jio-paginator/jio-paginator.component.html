@@ -1,0 +1,11 @@
+        <ul class="right pagination" *ngIf="pages">
+          <li class="waves-effect" [class.disabled]="meta?.current === 0" (click)="onPrev()">
+            <a><i class="material-icons">chevron_left</i></a>
+          </li>
+          <li class="waves-effect" *ngFor="let page of pages" [class.active]="pages[meta?.current].page == page?.page" (click)="onSelect(page?.page)">
+            <a>{{page?.page | uppercase}}</a>
+          </li>
+          <li class="waves-effect" [class.disabled]="meta?.current === meta.size - 1" (click)="onNext()">
+            <a><i class="material-icons">chevron_right</i></a>
+          </li>
+        </ul>

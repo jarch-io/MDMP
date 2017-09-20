@@ -1,6 +1,6 @@
 var employeeDB = require('../persistence/employeeDB');
 var Employee = require('../entitys/employeeEntity');
-var template = require('../util/jsonResponse');
+var template = require('../util/Template');
 var error = require('../util/error');
 var Fecha = require('../util/Fecha');
 
@@ -12,16 +12,16 @@ module.exports = {
 			nombres : data.nombres,
 			apellidos : data.apellidos,
 			dni : data.dni,
-			fNacimiento : data.fNacimiento,
+			fNacimiento : data.fNacimiento ? new Fecha({strdate : data.fNacimiento}).get() : null,
 			cargo : data.cargo,
 			sexo : data.sexo
 		});
 
-		employeeDB.newEmployee(employee,function (err,id) {
+		employeeDB.newEmployee(employee,function (err,data) {
 			if(err) return next(err);
 
 			res.status(201);
-      res.jsonp(template.render({employee : {href : req.jio.domain+req.baseUrl+"/"+id}},res));
+      res.jsonp(template.render({employee : data},res));
 		});
 	},
   filter : function (req,res,next) {
@@ -62,9 +62,11 @@ module.exports = {
     employeeDB.getEmployeeByDni(req.jio.fields,req.params.dni,function (err,data) {
       if(err) return next(err);
 
-      data["href"] = req.jio.domain+req.baseUrl+"/"+data["_id"];
+      //data["href"] = req.jio.domain+req.baseUrl+"/"+data["_id"];
 
-      if(!/_id/gi.test(req.jio.fields)) delete data["_id"];
+      //if(!/_id/gi.test(req.jio.fields)) delete data["_id"];
+      
+      if(data["fNacimiento"]) data["fNacimiento"] = new Date(data["fNacimiento"]).getTime();
 
       res.status(200);
       res.jsonp(template.render({employee : data},res));
@@ -74,9 +76,9 @@ module.exports = {
     employeeDB.getEmployeeById(req.jio.fields,req.params.id,function (err,data) {
         if(err) return next(err);
 
-        data["href"] = req.jio.domain+req.baseUrl+"/"+req.params.id;
+        //data["href"] = req.jio.domain+req.baseUrl+"/"+req.params.id;
 
-        if(!/_id/gi.test(req.jio.fields)) delete data["_id"];
+        //if(!/_id/gi.test(req.jio.fields)) delete data["_id"];
 
         res.status(200);
         res.jsonp(template.render({employee : data},res));
@@ -91,9 +93,9 @@ module.exports = {
         for(var indx in data){
           var emp = data[indx]["_doc"];
 
-          emp.href = req.jio.domain+req.baseUrl+"/"+emp._id;
+          //emp.href = req.jio.domain+req.baseUrl+"/"+emp._id;
 
-          if(!/_id/gi.test(req.jio.fields)) delete emp._id;
+          //if(!/_id/gi.test(req.jio.fields)) delete emp._id;
 
           if(!/dni/gi.test(req.jio.fields)) delete emp.dni;
 
@@ -113,9 +115,9 @@ module.exports = {
         for(var indx in data){
           var emp = data[indx]["_doc"];
 
-          emp.href = req.jio.domain+req.baseUrl+"/"+emp._id;
+          //emp.href = req.jio.domain+req.baseUrl+"/"+emp._id;
 
-          if(!/_id/gi.test(req.jio.fields)) delete emp._id;
+          //if(!/_id/gi.test(req.jio.fields)) delete emp._id;
 
           if(!/dni/gi.test(req.jio.fields)) delete emp.dni;
 
@@ -133,15 +135,14 @@ module.exports = {
 
     employeeDB.getEmployeesAlphabet(habilitado,function (err,data) {
       if(err) return next(err);
-
-      var list = []
+      
       for(var key in data){
-        var page = data[key]["_id"].toLowerCase();
-        list.push({page : page,href : req.jio.domain+req.baseUrl+":apellidos("+page+")"+(/true|false/gi.test(habilitado) ? (":habilitado("+habilitado+")") : "")});
+        data[key]["page"] = data[key]["_id"];
+        delete data[key]["_id"];
       }
-
+      
       res.status(200);
-      res.jsonp(template.render({pages : list},res));
+      res.jsonp(template.render({pages : data},res));
     });
   },
   updateById : function (req,res,next) {
@@ -150,18 +151,19 @@ module.exports = {
       nombres : params.nombres,
       apellidos : params.apellidos,
       dni : params.dni,
-      fNacimiento : params.fNacimiento ? new Fecha(params.fNacimiento,"DD/MM/YYYY").get() : null,
+      fNacimiento : params.fNacimiento ? new Fecha(params.fNacimiento).get() : null,
       cargo : params.cargo,
       photo : params.photo,
       direccion : params.direccion,
       distrito : params.distrito,
       email : params.email,
+      sexo : params.sexo,
       telefonos : params.telefonos,
       estadoCivil : params.estadoCivil,
       conyuge : params.conyuge,
       regLaboral : params.regLaboral,
       area : params.area,
-      fTerContrato : params.fTerContrato ? new Fecha(params.fTerContrato,"DD/MM/YYYY").get() : null,
+      fTerContrato : params.fTerContrato ? new Fecha(params.fTerContrato).get() : null,
       habilitado : params.habilitado,
       hijos : params.hijos,
       updateAt : Date.now()

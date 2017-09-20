@@ -1,9 +1,8 @@
 var express = require('express');
 var router = express.Router();
+var birthdays = require('../controllers/birthdaysController');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond birthdays');
-});
+router.get('/', birthdays.get);
 
 module.exports = router;

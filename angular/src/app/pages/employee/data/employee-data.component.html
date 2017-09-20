@@ -1,0 +1,36 @@
+      <div class="jio-panel">
+        <div class="body-panel">
+            <div class="row">
+              <div *ngIf="employee" class="col s12 m6">
+                
+                <jio-card-user [data]="employee"></jio-card-user>
+
+              </div>
+              <div class="col s12 m6" [class.offset-m3]="!employee">
+
+                <div *ngIf="!employee">
+                  <div class="switch">
+                    <label class="tooltipped" data-target="confirm" data-position="bottom" data-tooltip="esperando">
+                      <input type="checkbox" [(ngModel)]="createUnique">
+                      <span class="lever"></span>
+                      {{createUnique ? "Agregar un solo empleado" : "Agregar varios empleados"}}.
+                    </label>
+                  </div>
+                </div>
+                
+                <jio-form [skeletor]="skeletors.personal" [model]="employee"></jio-form>
+
+              </div>
+              <div *ngIf="employee" class="col s12 m6">
+                
+                <jio-form [skeletor]="skeletors.contacto" [model]="employee"></jio-form>
+
+              </div>
+              <div *ngIf="employee" class="col s12 m6">
+                
+                <jio-form [skeletor]="skeletors.civil" [model]="employee"></jio-form>
+
+              </div>
+            </div>
+        </div>
+      </div>

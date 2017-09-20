@@ -1,0 +1,125 @@
+  <header>
+    <nav>
+      <div class="nav-wrapper">
+        <a href="#" data-activates="mobile-menu-employees" class="button-collapse">
+          <i class="material-icons">menu</i>
+        </a>
+        <ul class="left hide-on-med-and-down">
+          <li class="active">
+            <a href="/">Inicio</a>
+          </li>
+          <li>
+            <a href="/contracts">Contratos</a>
+          </li>
+          <li>
+            <a href="/birthdays">Cumpleaños</a>
+          </li>
+        </ul>
+
+        <ul class="right hide-on-med-and-up show-on-medium">
+          <li>
+            <a routerLink="/employees/new" class="waves-effect teal">
+              <i class="material-icons">add</i>
+            </a>
+          </li>
+        </ul>
+
+        <ul class="right hide-on-med-and-down">
+          <li>
+            <a routerLink="/employees/new" class="waves-effect waves-light btn">
+              Agregar colaborador
+            </a>
+          </li>
+        </ul>
+
+        <ul class="right">
+          <li>
+            <form action="search">
+              <input id="search" type="search" name="q" required placeholder="Buscar">
+            </form>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <section id="main" class="jio-scroll-y">
+    <div class="container wrapper-main">
+      
+      <div class="jio-fixed">
+        <ul class="left" *ngIf="employees">
+          <li>
+            <a data-target="modal-download" href="#" class="waves-effect waves-light btn">
+              EXPORTAR EXCEL
+            </a>
+          </li>
+        </ul>
+        
+        <jio-paginator [callback]="getEmployees.bind(this)"></jio-paginator>
+      </div>
+
+      <div class="jio-panel">
+          
+          <jio-table *ngIf="employees" [skeletor]="skeletorTable" [rows]="employees"></jio-table>
+          
+          <span *ngIf="!employees">No hay datos para mostrar</span>
+      </div>
+
+      <div class="alerts-wrapper">
+      </div>
+    </div>
+  </section>
+
+  <aside>
+    <ul class="side-nav" id="mobile-menu-employees">
+          <li class="active">
+            <a href="/"><i class="material-icons">home</i>Inicio</a>
+          </li>
+          <li>
+            <a href="/contracts"><i class="material-icons">description</i>Contratos</a>
+          </li>
+          <li>
+            <a href="/birthdays"><i class="material-icons">today</i>Cumpleaños</a>
+          </li>
+    </ul>
+  </aside>
+
+  <div class="modals">
+    <div class="modal modal-fixed-footer jio-confirm" id="modal-download">
+      <div class="modal-content card-panel">
+        <h4>Personalice el documento</h4>
+       
+          <div>
+            <div class="switch">
+              <label>
+                <input type="checkbox" name="dataEmployees">
+                <span class="lever"></span>
+                <b>Exportando todos los trabajadores.</b>
+              </label>
+            </div>
+          </div>
+          <div>
+            <div class="switch">
+              <label>
+                <input type="checkbox" name="dataActive">
+                <span class="lever"></span>
+                <b>Incluye trabajadores deshabilitados.</b>
+              </label>
+            </div>
+          </div>
+          <div>
+            <div class="switch">
+              <label>
+                <input type="checkbox" name="dataPeriodos">
+                <span class="lever"></span>
+                <b>Incluye periodos del trabajador.</b>
+              </label>
+            </div>
+          </div>
+        
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect teal btn-flat ">DESCARGAR</a>
+      </div>
+    </div>
+  </div>

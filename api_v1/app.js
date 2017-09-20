@@ -34,6 +34,8 @@ app.use(function (req,res,next) {
   
   //todas nuestras respuestas seran en formato JSON
   res.setHeader("Content-Type", "application/json");
+  res.setHeader("Access-Control-Allow-Origin","*");
+  res.setHeader("Access-Control-Allow-Methods","PUT");
 
   //parseamos la url en busca de campos especiales {:(name,nameN)::name(value)::nameN(valueN)}
   if(/:/g.test(req.url)){

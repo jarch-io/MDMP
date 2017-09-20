@@ -1,0 +1,38 @@
+      <div class="jio-panel">
+        <div class="body-panel">
+            <div class="row">
+              <div class="col s12 m6">
+                
+                <jio-form [skeletor]="skeletors.contrato" [model]="employee"></jio-form>
+
+              </div>
+              <div class="col s12 m6">                
+                <jio-form-create [skeletor]="skeletors.period"></jio-form-create>
+              </div>
+              <div class="col s12">
+
+                <div class="jio-form">
+                  <div class="frm-header">
+                    <div class="left">
+                      <b>Periodos Pagados</b>
+                    </div>
+                  </div>
+                  <div class="frm-body">
+                    <div style="padding-top:5px;">
+                      
+                      <!--jio-table *ngIf="periods" [skeletor]="skeletors.periods" [rows]="periods"></jio-table-->
+                      <jio-grid *ngIf="periods" [data]="periods">
+                        <!--head-->
+                        <th>inicio</th><th>fin</th><th>dias</th><th>pago</th><th>cargo</th><th>reg. lab.</th><th>area</th><th><button class="hidden btn-floating">ver</button></th>
+
+                        <!--body-item-->
+                        <ng-template jioTemplate="item">sjadjasldja</ng-template>
+                      </jio-grid>                      
+                      
+                    </div>
+                  </div>
+
+              </div>
+            </div>
+        </div>
+      </div>

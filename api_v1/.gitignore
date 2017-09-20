@@ -1,5 +1,7 @@
 #Ignores
 
 /node_modules
+/TYPESCRIPT
 
-.gitignore
+gulpfile.js
+tsConfig.json

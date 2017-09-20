@@ -1,0 +1,17 @@
+              <div class="jio-card-user">
+                <div class="card-header">
+                  <div [style.background-image]="data.photo ? 'url(data.photo)' : data.sexo === 'h' ? 'url(/assets/img/user_circle_man.png)' : 'url(/assets/img/user_circle_woman.png)'" class="card-photo">
+                    <button [style.display]="data.habilitado ? '' : 'none'" class="btn-floating transparent waves-effect tooltipped" data-position="top" data-tooltip="Cambiar foto">
+                      <i class="material-icons">camera_alt</i>
+                    </button>
+                  </div>
+                </div>
+                <div class="card-body center-align">
+                  <div>
+                    <span>{{data?.fNacimiento | date : "yy"}} años</span>
+                  </div>
+                  <div>
+                    <b>{{data?.cargo}}</b>
+                  </div>
+                </div>
+              </div>

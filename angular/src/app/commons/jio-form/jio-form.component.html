@@ -1,0 +1,44 @@
+                <div class="jio-form">
+                  <div class="frm-header">
+                    <div class="left">
+                      <b>{{skeletor.title}}</b>
+                    </div>
+                    <div class="right" [style.display]="model ? model?.habilitado ? '' : 'none' : ''">
+                      <button (click)="save()" [style.display]="!model ? '' : only ? 'none' : ''" class="btn-floating green waves-effect waves-light tooltipped" data-position="top" data-tooltip="Guardar">
+                        <i class="material-icons">save</i>
+                      </button>
+                      <button (click)="cancel()" [style.display]="!model ? 'none' : only ? 'none' : ''" class="btn-floating red waves-effect waves-light tooltipped" data-position="top" data-tooltip="Cancelar">
+                        <i class="material-icons">cancel</i>
+                      </button>
+                      <button (click)="edit()" [style.display]="!model ? 'none' : only ? '' : 'none'" class="btn-floating blue waves-effect waves-light tooltipped" data-position="top" data-tooltip="Editar">
+                        <i class="material-icons">edit</i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="frm-body">
+                    <div *ngFor="let element of skeletor.elements" [class]="element.class">
+                      <ng-container [ngSwitch]="element.type">
+                        <ng-container *ngSwitchCase="'text'">
+                          <input (change)="change($event)" name="{{element.name || element.key}}" id="{{element.id || element.key}}" [(ngModel)]="model && model[element.key]" type="text" [disabled]="only">
+                          <label for="{{element.id || element.key}}"><b>{{element.label || element.key}}</b></label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'date'">
+                          <input (change)="change($event)" name="{{element.name || element.key}}" id="{{element.id || element.key}}" [(ngModel)]="model && model[element.key]" type="text" [disabled]="only">
+                          <label for="{{element.id || element.key}}"><b>{{element.label || element.key}}</b></label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'radio'">
+                          <div class="input-field"></div>
+                          <span *ngFor="let option of element.options">
+                            <input (change)="change($event)" type="radio" name="{{element.name || element.key}}" id="{{option[1] || element.key}}" value="{{option[0]}}" [(ngModel)]="model && model[element.key]" [disabled]="only">
+                            <label for="{{option[1]}}"><b>{{option[1]}}</b></label>
+                          </span>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'select'">
+                          <label><b>{{element.label || element.key}}</b></label>
+                          <select (change)="change($event)" class="browser-default" name="{{element.name || element.key}}" id="{{element.id || element.key}}" [(ngModel)]="model && model[element.key]" [disabled]="only">
+                            <option *ngFor="let option of element.options" value="{{option[0]}}">{{option[1]}}</option>
+                          </select>
+                        </ng-container>
+                      </ng-container>
+                  </div>
+                </div>

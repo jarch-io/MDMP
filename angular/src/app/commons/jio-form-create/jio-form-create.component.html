@@ -1,0 +1,24 @@
+                <div class="jio-form">
+                  <div class="frm-header">
+                    <div class="left">
+                      <b>{{skeletor.title}}</b>
+                    </div>
+                    <div class="right" [style.display]="model ? model?.habilitado ? '' : 'none' : ''">
+                      <button (click)="save()" class="btn-floating green waves-effect waves-light tooltipped" data-position="top" data-tooltip="Guardar">
+                        <i class="material-icons">save</i>
+                      </button>
+                      <button (click)="cancel()" class="btn-floating red waves-effect waves-light tooltipped" data-position="top" data-tooltip="Cancelar">
+                        <i class="material-icons">cancel</i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="frm-body">
+                    <div *ngFor="let element of skeletor.elements" [class]="element.class">
+                      <ng-container [ngSwitch]="element.type">
+                        <ng-container *ngSwitchCase="'text'">
+                          <input (change)="change($event)" name="{{element.name || element.key}}" id="{{element.id || element.key}}" [(ngModel)]="model && model[element.key]" type="text" [disabled]="only">
+                          <label for="{{element.id || element.key}}"><b>{{element.label || element.key}}</b></label>
+                        </ng-container>
+                      </ng-container>
+                  </div>
+                </div>
